@@ -1,4 +1,4 @@
-name: Node.js CI
+name: Deploy CI
 on:
   push:
     branches:
@@ -18,7 +18,7 @@ jobs:
       - run: yarn install
       - run: yarn build
       - name: Deploy
-        uses: comparison-react@v1
+        uses: hendrysiak/comparison-react
         with:
           target_branch: gh-pages
           build_dir: build
