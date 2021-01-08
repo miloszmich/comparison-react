@@ -18,7 +18,7 @@ jobs:
       - run: yarn install
       - run: yarn build
       - name: Deploy
-        uses: hendrysiak/comparison-react
+        uses: crazy-max/ghaction-github-pages@v1
         with:
           target_branch: gh-pages
           build_dir: build
