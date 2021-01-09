@@ -1,0 +1,11 @@
+<svg width="100%" height="100%" viewBox="0 0 48 50" version="1.1" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;">
+    <g>
+        <g transform="matrix(0.707107,-0.707107,0.707107,0.707107,-16.999,21.3849)">
+            <rect x="-1.514" y="28.712" width="37.657" height="5" style="fill:none;stroke:rgb(255,138,7);stroke-width:2px;"/>
+        </g>
+        <path d="M44.138,4.364L41.215,10.1L45.767,14.653L39.313,13.741L36.342,19.525L35.311,13.19L28.941,12.195L34.766,9.183L33.849,2.734L38.401,7.287L44.138,4.364Z" style="fill:none;fill-rule:nonzero;stroke:rgb(255,138,7);stroke-width:2px;"/>
+        <path d="M24.618,20.373L28.153,23.909" style="fill:none;fill-rule:nonzero;stroke:rgb(255,138,7);stroke-width:2px;"/>
+        <path d="M36,33.292L37.311,35.689L39.708,37L37.311,38.311L36,40.708L34.689,38.311L32.292,37L34.689,35.689L36,33.292Z" style="fill:none;fill-rule:nonzero;stroke:rgb(255,138,7);stroke-width:2px;"/>
+        <path d="M12,8.292L14.372,12.628L18.708,15L14.372,17.372L12,21.708L9.628,17.372L5.292,15L9.628,12.628L12,8.292Z" style="fill:none;fill-rule:nonzero;stroke:rgb(255,138,7);stroke-width:2px;"/>
+    </g>
+</svg>
