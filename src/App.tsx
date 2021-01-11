@@ -3,7 +3,7 @@ import Footer from 'layout/Footer/Footer';
 import Header from 'layout/Header/Header';
 import Loader from 'layout/Loader/Loader';
 import Reasons from 'layout/Reasons/Reasons';
-import DefaultStep from 'pages/DefaultStep/DefaultStep';
+import StepContainer from 'pages/StepContainer';
 import React from 'react';
 import 'scss/style.scss';
 import axios from 'axios';
@@ -19,6 +19,11 @@ function App() {
   const [multipierData, setMultipierData] = React.useState('');
   const [deviceAndSkillData, setDeviceAndSkillData] = React.useState('');
   const [infoAboutDisciplines, setInfoAboutDisciplines] = React.useState('');
+
+  const [stepFirstValue, setStepFirstValue] = React.useState<number | null>(null);
+  const [stepSecondValue, setStepSecondValue] = React.useState<number | null>(null);
+  const [stepThirdValues, setStepThirdValues] = React.useState<number[]>([]);
+  const [stepFourthValue, setStepFourthValue] = React.useState<number | null>(null);
 
   const stringParser = (string: string) => {
     return JSON.parse(string);
@@ -50,9 +55,20 @@ function App() {
         />
         <Close handleClose={() => setVisibility(false)}/>
         <Header />
-        <Reasons />
-        <DefaultStep step={step}/>
-        <Footer />
+        <Reasons numberOfUses={numberOfUses}/>
+        <StepContainer 
+          step={step} 
+          setStep={setStep}
+          stepFirstValue={stepFirstValue}
+          setStepFirstValue={setStepFirstValue}
+          stepSecondValue={stepSecondValue}
+          setStepSecondValue={setStepSecondValue}
+          stepThirdValues={stepThirdValues}
+          setStepThirdValues={setStepThirdValues}
+          stepFourthValue={stepFourthValue}
+          setStepFourthValue={setStepFourthValue}
+          />
+        <Footer step={step} setStep={setStep} stepThirdValues={stepThirdValues}/>
       </div>}
     </div> 
   );
