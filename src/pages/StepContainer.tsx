@@ -2,8 +2,8 @@ import Slide from 'helpers/Slide';
 import React from 'react'
 import DisciplineStep from './DisciplineStep/DisciplineStep';
 import SliderStep from './SliderStep/SliderStep';
-import Card from './StandardStep/components/Card'
 import StandardStep from './StandardStep/StandardStep';
+import { ReactComponent as Return } from './assets/return.svg'
 
 import { ReactComponent as Op7 } from './DisciplineStep/components/assets/op7.svg';
 import axios from 'axios';
@@ -147,7 +147,6 @@ const DefaultStep = (props: Props) => {
         tekstIndywidualnyDyscypliny={result.tekstIndywidualnyDyscypliny} 
         tekstIndywidualnyPoziom={result.tekstIndywidualnyPoziom}
         tekstIndywidualnyUrzadzenie={result.tekstIndywidualnyUrzadzenie}
-        resetResult={props.resetResult}
       /> : <></>
       break;
   }
@@ -157,15 +156,16 @@ const DefaultStep = (props: Props) => {
       <Slide show={props.show} className="comparison__options options">
         <>
     <h3 className="options__title">
-      <span className="options__title--step">
-        {props.step < 5 ? `${props.step + 1}/5. ` : `Najlepszy bukmacher dla Ciebie to `}
+      <span className={`options__title${props.step < 5 ? '--step' : '--info'}`}>
+        {props.step < 5 ? `${props.step + 1}/5. ` : <>{`Mamy to! Twoje odpowiedzi sugerują, `}<br/></>}
         </span>
-        <span className="options__title--desc">
+        <span className={`options__title${props.step < 5 ? '--desc' : '--info'}`}>
           {props.step < 5 
             ? steps[props.step] 
-            : result && result.result && <a className="options__result--title-link" href={booksData.find(bd => bd.buk === result.result)!.link}>{result.result}</a>}
+            : result && result.result && <span className={`options__title${props.step < 5 ? '--desc' : '--info'}`}>{`że najlepszym bukmacherem dla Ciebie może być `}<a className="options__result--title-link" href={booksData.find(bd => bd.buk === result.result)!.link}>{result.result}</a></span>}
         </span>
       {props.step === 4 && <p className="options__title--algorithm"><Op7/> <i>Algorytm wybierze atrakcyjną ofertę do wysokości Twojego pierwszego depozytu</i></p>}
+      {props.step === 5 && <><br/><span className="options__title--return" onClick={() => props.resetResult()}><Return />Wybierz na nowo</span></>}
       </h3>
     <section className="options__container">
       {currentStepComponent}

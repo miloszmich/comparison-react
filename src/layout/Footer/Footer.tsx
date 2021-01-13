@@ -38,7 +38,8 @@ const setCookie = (cname: string, cvalue: string | boolean, secs: number) => {
 
   const comparisonResultUpdate = () => {
     if (!getCookie("porownywarka-counted")) {
-      $.ajax({url:"https://najlepsibukmacherzy.pl/wp-content/themes/najlepsibukmacherzy/logic/kalkulator-bonusowy-counter.php", async: true, type: "POST", data: { "pass": 'DSF6YVjmKy' }})
+      // $.ajax({url:"https://najlepsibukmacherzy.pl/wp-content/themes/najlepsibukmacherzy/logic/kalkulator-bonusowy-counter.php", async: true, type: "POST", data: { "pass": 'DSF6YVjmKy' }})
+      axios.post("https://najlepsibukmacherzy.pl/wp-content/themes/najlepsibukmacherzy/logic/kalkulator-bonusowy-counter.php", { "pass": 'DSF6YVjmKy' });
       setCookie("porownywarka-counted", true, 5)
     }
   }

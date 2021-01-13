@@ -93,7 +93,7 @@ function App() {
         />
         <Close handleClose={() => setVisibility(false)}/>
         <Header />
-        <Reasons numberOfUses={numberOfUses}/>
+        {step !== 5 && <Reasons numberOfUses={numberOfUses}/>}
           <StepContainer 
             show={show}
             stepHandler={stepHandler}

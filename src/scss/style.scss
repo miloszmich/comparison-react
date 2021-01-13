@@ -240,6 +240,9 @@ body.active > .comparison {
   color: #414141;
   z-index: 250;
   animation: slideDown 1s ease-in-out;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   &__close{
     position: absolute;
     width: 25px;
@@ -393,6 +396,10 @@ body.active > .comparison {
     font-weight: 400;
     text-align: center;
     z-index: 255;
+    &--info {
+      margin-bottom: 4px;
+      color: #414141;
+    }
     &--step {
       color: #8c8c8c;
     }
@@ -414,7 +421,21 @@ body.active > .comparison {
       height: 25px;
       margin-right: 16px;
     }}
+    &--return {
+      display: block;
+      margin-top: 16px;
+      text-decoration: underline;
+      color: #a5a5a5;
+      font-size: 14px;
+      cursor: pointer;
+      > svg {
+        margin-right: 4px;
+        width: 12px;
+        height: 12px;
+      }
+    }
   }
+
   &__container {
     padding: 0 25px 0 25px;
     width: 100%;
@@ -443,6 +464,9 @@ body.active > .comparison {
     display: flex;
     width: 100%;
     justify-content: space-between;
+    border: 3px solid $main-color;
+    padding: 30px;
+    background-color: #ffffff;
     @media (max-width: 650px) {
       flex-direction: column;
       justify-content: center;
@@ -450,7 +474,9 @@ body.active > .comparison {
   }
   &__result {
     &--title-link {
-      color: $main-color;
+      font-weight: bold;
+      text-decoration: none;
+      color: #414141;
     }
   }
 }
@@ -459,25 +485,23 @@ body.active > .comparison {
   display: flex;
   flex-direction: column;
   flex-basis: 40%;
+  position: relative;
+  margin-bottom: 32px;
   @media (max-width: 650px) {
     flex-basis: 80%;
   }
   &__image {
     width: 300px;
-    height: 150px;
+    height: 200px;
     @media (min-width: 650px) {
-      width: 350px;
-      height: 200px;
+      width: 345px;
+      height: 245px;
     }
   }
-  &__return {
-    margin-top: 16px;
-    text-decoration: underline;
-    cursor: pointer;
-    > svg {
-      width: 12px;
-      height: 12px;
-    }
+  &__button{
+    position: absolute;
+    bottom: -25px;
+    left: 12.5%;
   }
 }
 
@@ -487,8 +511,10 @@ body.active > .comparison {
   flex-basis: 55%;
   flex-wrap: wrap;
   padding-top: 16px;
+  margin-left: 40px;
   @media (max-width: 650px) {
     flex-basis: 90%;
+    margin-left: 0px;
   }
   > p {
     line-height: 24px;
@@ -500,9 +526,13 @@ body.active > .comparison {
     font-size: 14px;
   }
   &__plus {
-    padding-right: 8px;
-    font-weight: 900;
-    color: #A2CF69;
+    > .reasons__svg {
+      width: 12px;
+      height: 12px;
+    }
+    &--last {
+      padding-right: 28px;
+    }
   }
   &__advantage {
     > a {

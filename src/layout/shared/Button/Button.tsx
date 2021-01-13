@@ -1,5 +1,5 @@
 import React from 'react'
-import { ReactComponent as ButtonIcon } from './assets/button-icon.svg'
+import { ReactComponent as ButtonIcon } from '../assets/button-icon.svg'
 
 interface Props {
   onClickHandler: () => void;
