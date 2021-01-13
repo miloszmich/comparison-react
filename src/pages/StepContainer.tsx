@@ -1,9 +1,19 @@
+import Slide from 'helpers/Slide';
 import React from 'react'
 import DisciplineStep from './DisciplineStep/DisciplineStep';
+import SliderStep from './SliderStep/SliderStep';
 import Card from './StandardStep/components/Card'
 import StandardStep from './StandardStep/StandardStep';
 
+import { ReactComponent as Op7 } from './DisciplineStep/components/assets/op7.svg';
+import axios from 'axios';
+import { firstStep, fourthStep, secondStep, thirdStep } from 'helpers/standardData';
+import ScoreStep from './ScoreStep/ScoreStep';
+import { getBook } from 'helpers/setScore';
+
 interface Props {
+  show: boolean;
+  stepHandler: () => void;
   step: number;
   setStep: (step: number) => void;
   stepFirstValue: number | null;
@@ -14,9 +24,20 @@ interface Props {
   setStepThirdValues: (value: number[]) => void;
   stepFourthValue: number | null;
   setStepFourthValue: (value: number | null) => void;
+  stepFifthValue: number;
+  setStepFifthValue: (value: number) => void;
+  resetResult: () => void;
 }
 
 const DefaultStep = (props: Props) => {
+
+  const [booksData, setBooksData] = React.useState<Record<string, string>[]>([]);
+  const [multipierData, setMultipierData] = React.useState<Record<string, Record<string, (string | number)>[]>>({});
+  const [deviceAndSkillData, setDeviceAndSkillData] = React.useState<Record<string, Record<string, (string | number)>[]>>({});
+  const [infoAboutDisciplines, setInfoAboutDisciplines] = React.useState<Record<string, (string | number)>[]>([]);
+
+  const [result, setResult] = React.useState<Record<string, string>>();
+
 
   const steps = [
     'Od jak dawna obstawiasz zakłady bukmacherskie?',
@@ -26,113 +47,61 @@ const DefaultStep = (props: Props) => {
     'Jaka będzie wielkość pierwszego depozytu?'
   ];
 
-
-
- const firstStep = [
-    { 
-    title: 'Jestem debiutantem', 
-    description: ['To moje pierwsze kroki w obstawianiu'],
-    result:'weak'
-   }, 
-    { 
-    title: 'Jestem doświadczony', 
-    description: ['Wiem co to AKO, marża, livebetting i freebet'],
-    result: 'medium'}, 
-    { 
-    title: 'Jestem legendą', 
-    description: ['Jestem postrachem bukmacherów!'],
-    result: 'strong' }
-  ];
-
-  const secondStep = [
-    { 
-    title: 'Na smartfonie lub tablecie', 
-    description: ['Zawsze pod ręką', 'Szybkie zakłady'],
-  result: 'mobile' }, 
-    { 
-    title: 'Na komputerze', 
-    description: ['Przejrzysta i funkcjonalna strona', 'Wygodne przeglądanie oferty'],
-  result: 'comp' }, 
-    { 
-    title: 'Jeszcze nie wiem', 
-    description: ['Nie mam preferencji'],
-  result:'no-preferrences' }
-  ];
-
-  const thirdStep = [
-    { 
-    title: 'Piłkę nożną', 
-    selected: false,
-    result:'piłka nożna' }, 
-    { 
-    title: 'Koszykówkę', 
-    selected: false,
-    result:'koszykówka' }, 
-    { 
-    title: 'Tenis ziemny', 
-    selected: false,
-  result:'tenis ziemny' }, 
-    { 
-    title: 'Hokej', 
-    selected: false,
-  result:'hokej' }, 
-    { 
-    title: 'Sporty walki', 
-    selected: false,
-  result:'sporty walki' }, 
-    { 
-    title: 'Siatkówkę', 
-    selected: false,
-  result:'siatkówka' }, 
-    { 
-    title: 'eSport', 
-    selected: false,
-  result:'esport' }, 
-    { 
-    title: 'Wirtualne Sporty', 
-    selected: false,
-  result: 'sporty wirtualne' }, 
-    { 
-    title: 'Inne', 
-    selected: false,
-  result: 'inne' }, 
-  ];
-
-  const fourthStep = [
-    { 
-    title: 'Bonus do depozytu', 
-    description: ['Bonus dodany do Twojego depozytu'],
-  result:'bonus-to-deposit' }, 
-    { 
-    title: 'Bonus bez depozytu', 
-    description: ['Bonus na start bez wpłaty własnej'],
-  result:'only-bonus' 
-}, 
-    { 
-    title: 'Nie chcę bonusu', 
-    description: ['Nie jestem zainteresowany promocjami'],
-  result:'no-bonus' }
-  ];
-
-  const stepHandler = () => {
-    setTimeout(() => {
-      props.setStep(props.step + 1);
-    }, 1000)
+  const stringParser = (string: string) => {
+    return JSON.parse(string);
   }
+
+  React.useEffect(() => {
+    const getData = async () => {
+      const comparisonData = await axios.get('https://najlepsibukmacherzy.pl/wp-json/wp/v2/polaspecjalne/8689/');
+
+      setBooksData(stringParser(comparisonData.data.dane_bukow));
+      setMultipierData(stringParser(comparisonData.data.mnozniki_dodatkow));
+      setDeviceAndSkillData(stringParser(comparisonData.data.urzadzenie_i_skill));
+      setInfoAboutDisciplines(stringParser(comparisonData.data.dyscypliny_punkty));
+
+      // setLoaderVisibility(false);
+    }
+
+    getData();
+  }, []);
+
+
+  React.useEffect(() => {
+    if (props.step === 5) {
+      
+      const result = getBook(
+        {
+          firstStep: firstStep[props.stepFirstValue as number].result,
+          secondStep: secondStep[props.stepSecondValue as number].result,
+          thirdStep: props.stepThirdValues.map(v => thirdStep[v].result),
+          fourthStep: fourthStep[props.stepFourthValue as number].result,
+          fifthStep: props.stepFifthValue,
+        }, {
+          byDevice: deviceAndSkillData,
+          multipiers: multipierData,
+          disciplines: infoAboutDisciplines,
+        }
+      )
+
+      setResult(result);
+    }
+  }, [props.step]);
 
   const standardStepValueHandler = (value: number) => {
     if (props.step === 0) {
       props.setStepFirstValue(value);
-      stepHandler();
+      props.stepHandler();
     }
     if (props.step === 1) {
       props.setStepSecondValue(value);
-      stepHandler();
+      props.stepHandler();
     }
     if (props.step === 3) {
       props.setStepFourthValue(value);
-      stepHandler();
+      props.stepHandler();
     }
+
 
   }
 
@@ -168,21 +137,41 @@ const DefaultStep = (props: Props) => {
     case 3:
       currentStepComponent = <StandardStep stepData={fourthStep} step={props.step} stepValueHandler={standardStepValueHandler} activeOption={activeOption}/>
       break;
+    case 4:
+      currentStepComponent = <SliderStep setStepFifthValue={props.setStepFifthValue}/>
+      break;
+    case 5:
+      currentStepComponent = result ? <ScoreStep 
+        bookInfo={ booksData.find(bd => bd.buk === result.result) ||  {buk: 'Fortuna', link: '', logo: ''}} 
+        usedBook={result.result}
+        tekstIndywidualnyDyscypliny={result.tekstIndywidualnyDyscypliny} 
+        tekstIndywidualnyPoziom={result.tekstIndywidualnyPoziom}
+        tekstIndywidualnyUrzadzenie={result.tekstIndywidualnyUrzadzenie}
+        resetResult={props.resetResult}
+      /> : <></>
+      break;
   }
 
   return (
-    <main className="comparison__options options">
+    <main style={{overflow: 'hidden'}}>
+      <Slide show={props.show} className="comparison__options options">
+        <>
     <h3 className="options__title">
       <span className="options__title--step">
-        {`${props.step + 1}/5.`}
+        {props.step < 5 ? `${props.step + 1}/5. ` : `Najlepszy bukmacher dla Ciebie to `}
         </span>
         <span className="options__title--desc">
-          {steps[props.step]}
+          {props.step < 5 
+            ? steps[props.step] 
+            : result && result.result && <a className="options__result--title-link" href={booksData.find(bd => bd.buk === result.result)!.link}>{result.result}</a>}
         </span>
+      {props.step === 4 && <p className="options__title--algorithm"><Op7/> <i>Algorytm wybierze atrakcyjną ofertę do wysokości Twojego pierwszego depozytu</i></p>}
       </h3>
     <section className="options__container">
       {currentStepComponent}
     </section>
+    </>
+    </Slide>
   </main>
   )
 }

@@ -7,6 +7,7 @@ import StepContainer from 'pages/StepContainer';
 import React from 'react';
 import 'scss/style.scss';
 import axios from 'axios';
+import Confetti from 'layout/Confetti/Confetti';
 
 function App() {
 
@@ -15,39 +16,76 @@ function App() {
   const [step, setStep] = React.useState(0);
 
   const [numberOfUses, setNumberOfUses] = React.useState(0);
-  const [booksData, setBooksData] = React.useState('');
-  const [multipierData, setMultipierData] = React.useState('');
-  const [deviceAndSkillData, setDeviceAndSkillData] = React.useState('');
-  const [infoAboutDisciplines, setInfoAboutDisciplines] = React.useState('');
+
 
   const [stepFirstValue, setStepFirstValue] = React.useState<number | null>(null);
   const [stepSecondValue, setStepSecondValue] = React.useState<number | null>(null);
   const [stepThirdValues, setStepThirdValues] = React.useState<number[]>([]);
   const [stepFourthValue, setStepFourthValue] = React.useState<number | null>(null);
+  const [stepFifthValue, setStepFifthValue] = React.useState<number>(0);
 
-  const stringParser = (string: string) => {
-    return JSON.parse(string);
-  }
+  const [show, setShow] = React.useState(true);
+
 
   React.useEffect(() => {
     const getData = async () => {
-      const comparisonData = await axios.get('https://najlepsibukmacherzy.pl/wp-json/wp/v2/polaspecjalne/8689/');
       const numberOfUsesDB = await axios.get('https://najlepsibukmacherzy.pl/wp-json/wp/v2/polaspecjalne/6324/');
 
       setNumberOfUses(Number(numberOfUsesDB.data.porownywarka_licznik));
-      setBooksData(stringParser(comparisonData.data.dane_bukow));
-      setMultipierData(stringParser(comparisonData.data.mnozniki_dodatkow));
-      setDeviceAndSkillData(stringParser(comparisonData.data.urzadzenie_i_skill));
-      setInfoAboutDisciplines(stringParser(comparisonData.data.dyscypliny_punkty));
-
-      setLoaderVisibility(false);
+      setTimeout(() => setLoaderVisibility(false), 2000);
     }
 
     getData();
-  }, [])
+  }, []);
+
+  const stepHandler = () => {
+    setShow(false);
+    setTimeout(() => {
+      setStep(step + 1);
+      setShow(true);
+    }, 1000)
+  }
+
+  const resetResult = () => {
+    setStepFirstValue(null);
+    setStepSecondValue(null);
+    setStepThirdValues([]);
+    setStepFourthValue(null);
+    setStepFifthValue(0);
+    setStep(0);
+  };
+
+  const setNewCurrentStep = (step: number) => {
+    if (step === 0) {
+      resetResult();
+    }
+    if (step === 1) {
+      setStepSecondValue(null);
+      setStepThirdValues([]);
+      setStepFourthValue(null);
+      setStepFifthValue(0);
+      setStep(step);
+    }
+    if (step === 2) {
+      setStepThirdValues([]);
+      setStepFourthValue(null);
+      setStepFifthValue(0);
+      setStep(step);
+    }
+    if (step === 3) {
+      setStepFourthValue(null);
+      setStepFifthValue(0);
+      setStep(step);
+    }
+    if (step === 4) {
+      setStepFifthValue(0);
+      setStep(step);
+    }
+  };
 
   return (
     <div className="modal-comparison">
+      {step === 5 && <Confetti />}
       <button className="warranty__button clicker b1" onClick={() => setVisibility(true)}>Odpal modal</button>
       {isVisible && <div className="comparison">
         <Loader 
@@ -56,19 +94,30 @@ function App() {
         <Close handleClose={() => setVisibility(false)}/>
         <Header />
         <Reasons numberOfUses={numberOfUses}/>
-        <StepContainer 
+          <StepContainer 
+            show={show}
+            stepHandler={stepHandler}
+            step={step} 
+            setStep={setStep}
+            stepFirstValue={stepFirstValue}
+            setStepFirstValue={setStepFirstValue}
+            stepSecondValue={stepSecondValue}
+            setStepSecondValue={setStepSecondValue}
+            stepThirdValues={stepThirdValues}
+            setStepThirdValues={setStepThirdValues}
+            stepFourthValue={stepFourthValue}
+            setStepFourthValue={setStepFourthValue}
+            stepFifthValue={stepFifthValue}
+            setStepFifthValue={setStepFifthValue}
+            resetResult={resetResult}
+            />
+        <Footer 
           step={step} 
-          setStep={setStep}
-          stepFirstValue={stepFirstValue}
-          setStepFirstValue={setStepFirstValue}
-          stepSecondValue={stepSecondValue}
-          setStepSecondValue={setStepSecondValue}
-          stepThirdValues={stepThirdValues}
-          setStepThirdValues={setStepThirdValues}
-          stepFourthValue={stepFourthValue}
-          setStepFourthValue={setStepFourthValue}
-          />
-        <Footer step={step} setStep={setStep} stepThirdValues={stepThirdValues}/>
+          stepThirdValues={stepThirdValues} 
+          stepFifthValue={stepFifthValue} 
+          stepHandler={stepHandler}
+          setNewCurrentStep={setNewCurrentStep}
+        />
       </div>}
     </div> 
   );

@@ -109,6 +109,7 @@ input[type=range]:focus::-ms-fill-upper {
   
   &__input {
     position: relative;
+    margin: 0;
   }
   &__shadow {
     top:0;
