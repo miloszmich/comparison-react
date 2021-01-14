@@ -403,6 +403,9 @@ body.active > .comparison {
     &--step {
       color: #8c8c8c;
     }
+    &--last-step {
+      margin-top: 8px !important;
+    }
     &--algorithm {
       display: flex;
       justify-content: center;
@@ -461,6 +464,7 @@ body.active > .comparison {
     width: 100%;
   }
   &__wrapper {
+    margin-bottom: 16px;
     display: flex;
     width: 100%;
     justify-content: space-between;
@@ -510,18 +514,20 @@ body.active > .comparison {
   flex-direction: column;
   flex-basis: 55%;
   flex-wrap: wrap;
-  padding-top: 16px;
+  padding-top: 24px;
   margin-left: 40px;
+  justify-content: space-between;
+  max-height: 245px;
   @media (max-width: 650px) {
     flex-basis: 90%;
     margin-left: 0px;
   }
-  > p {
+  > * > p {
     line-height: 24px;
     font-size: 14px;
     margin: 0;
   }
-  > span {
+  > * > span {
     display: inline;
     font-size: 14px;
   }
@@ -539,6 +545,16 @@ body.active > .comparison {
       color: black;
       padding-left: 10px;
     }
+  }
+  &__info {
+    font-weight: bold;
+    &--var {
+      font-weight: 400;
+      > a {
+        color: $main-color;
+      }
+    }
+    
   }
 
   > .warranty__button {

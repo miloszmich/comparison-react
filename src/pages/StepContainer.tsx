@@ -54,8 +54,27 @@ const DefaultStep = (props: Props) => {
   React.useEffect(() => {
     const getData = async () => {
       const comparisonData = await axios.get('https://najlepsibukmacherzy.pl/wp-json/wp/v2/polaspecjalne/8689/');
+      const bookData = await axios.get('https://najlepsibukmacherzy.pl/wp-json/wp/v2/bukmacherzy/');
 
-      setBooksData(stringParser(comparisonData.data.dane_bukow));
+      const usedBookData = bookData.data.map((bd: any) => {
+        return {
+          name: bd.title.rendered.split(' ')[0].replace(',', ''),
+          promoCode: bd.nu_promokod,
+          site: bd.nu_witryna
+        }
+      });
+      
+      const updatedBooksData = [...stringParser(comparisonData.data.dane_bukow)].map(bd => {
+        const foundedIndex = usedBookData.findIndex((ubd: any) => ubd.name.toUpperCase() === bd.buk.toUpperCase());
+
+        return {
+          ...bd,
+          promoCode: usedBookData[foundedIndex] && usedBookData[foundedIndex].promoCode ? usedBookData[foundedIndex].promoCode : null,
+          site: usedBookData[foundedIndex] && usedBookData[foundedIndex].site ? usedBookData[foundedIndex].site : null,
+        }
+      });
+
+      setBooksData(updatedBooksData);
       setMultipierData(stringParser(comparisonData.data.mnozniki_dodatkow));
       setDeviceAndSkillData(stringParser(comparisonData.data.urzadzenie_i_skill));
       setInfoAboutDisciplines(stringParser(comparisonData.data.dyscypliny_punkty));
@@ -155,7 +174,7 @@ const DefaultStep = (props: Props) => {
     <main style={{overflow: 'hidden'}}>
       <Slide show={props.show} className="comparison__options options">
         <>
-    <h3 className="options__title">
+    <h3 className={`options__title ${props.step === 5 ? 'options__title--last-step' : ''}`}>
       <span className={`options__title${props.step < 5 ? '--step' : '--info'}`}>
         {props.step < 5 ? `${props.step + 1}/5. ` : <>{`Mamy to! Twoje odpowiedzi sugerują, `}<br/></>}
         </span>
