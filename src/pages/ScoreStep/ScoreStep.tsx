@@ -2,6 +2,7 @@ import Button from 'layout/shared/Button/Button'
 import { ReactComponent as Check } from 'layout/shared/assets/check.svg'
 
 import React from 'react'
+import Loader from 'layout/Loader/Loader';
 
 interface Props {
   bookInfo: Record<string, string>;
@@ -9,9 +10,17 @@ interface Props {
   tekstIndywidualnyDyscypliny: string;
   tekstIndywidualnyPoziom: string;
   tekstIndywidualnyUrzadzenie: string;
+  setLoaderVisibility: (info: boolean) => void;
+  setShowConfetti: (info: boolean) => void;
+
 }
 
 const ScoreStep = (props: Props) => {
+
+  const bookLink = props.bookInfo.site ? props.bookInfo.site : props.bookInfo.buk === "Fortuna" ? 'www.efortuna.pl' : props.bookInfo.buk === "Totolotek" ? 'www.totolotek.pl' : null;
+
+
+
   return (
     <div className="options__wrapper">
       <div className="options__left-column left-column">
@@ -36,7 +45,7 @@ const ScoreStep = (props: Props) => {
         </div>
         <div className="right-column__bottom">
         {props.bookInfo.promoCode && <p><span className="right-column__info">Kod do rejestracji:</span><span className="right-column__info--var">{` ${props.bookInfo.promoCode}`}</span></p>}
-        {props.bookInfo.site && <p><span className="right-column__info">Strona rejestracji:</span><span className="right-column__info--var">{` `}<a href={props.bookInfo.site}>{`${props.bookInfo.site}`}</a></span></p>}
+        {bookLink && <p><span className="right-column__info">Strona rejestracji:</span><span className="right-column__info--var">{` `}<a href={props.bookInfo.link}>{`${bookLink}`}</a></span></p>}
         </div>
       </div>
     </div>

@@ -229,7 +229,7 @@ $circle_color-main: #f3f7f9;
   height: 100%;
   flex-direction: column;
   z-index: 500 !important;
-  display: none;
+  display: flex;
   &__container {
     position: relative;
     margin: auto auto;

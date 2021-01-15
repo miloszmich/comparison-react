@@ -27,6 +27,9 @@ interface Props {
   stepFifthValue: number;
   setStepFifthValue: (value: number) => void;
   resetResult: () => void;
+  loaderVisibility: boolean;
+  setLoaderVisibility: (info: boolean) => void;
+  setShowConfetti: (info: boolean) => void;
 }
 
 const DefaultStep = (props: Props) => {
@@ -60,7 +63,8 @@ const DefaultStep = (props: Props) => {
         return {
           name: bd.title.rendered.split(' ')[0].replace(',', ''),
           promoCode: bd.nu_promokod,
-          site: bd.nu_witryna
+          site: bd.nu_witryna,
+          logo: bd.nu_logo_widget
         }
       });
       
@@ -71,6 +75,7 @@ const DefaultStep = (props: Props) => {
           ...bd,
           promoCode: usedBookData[foundedIndex] && usedBookData[foundedIndex].promoCode ? usedBookData[foundedIndex].promoCode : null,
           site: usedBookData[foundedIndex] && usedBookData[foundedIndex].site ? usedBookData[foundedIndex].site : null,
+          logo: usedBookData[foundedIndex] && usedBookData[foundedIndex].logo ? usedBookData[foundedIndex].logo : bd.logo
         }
       });
 
@@ -166,12 +171,21 @@ const DefaultStep = (props: Props) => {
         tekstIndywidualnyDyscypliny={result.tekstIndywidualnyDyscypliny} 
         tekstIndywidualnyPoziom={result.tekstIndywidualnyPoziom}
         tekstIndywidualnyUrzadzenie={result.tekstIndywidualnyUrzadzenie}
+        setLoaderVisibility={props.setLoaderVisibility}
+        setShowConfetti={props.setShowConfetti}
       /> : <></>
       break;
   }
 
+  React.useEffect(() => {
+    if (props.step === 5) setTimeout(() => {
+      props.setLoaderVisibility(false);
+      props.setShowConfetti(true);
+    }, 3000)
+  },[props.step])
+
   return (
-    <main style={{overflow: 'hidden'}}>
+    !props.loaderVisibility ? <main style={{overflow: 'hidden'}}>
       <Slide show={props.show} className="comparison__options options">
         <>
     <h3 className={`options__title ${props.step === 5 ? 'options__title--last-step' : ''}`}>
@@ -191,7 +205,7 @@ const DefaultStep = (props: Props) => {
     </section>
     </>
     </Slide>
-  </main>
+  </main> : <></>
   )
 }
 

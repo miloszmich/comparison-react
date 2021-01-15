@@ -8,11 +8,13 @@ import React from 'react';
 import 'scss/style.scss';
 import axios from 'axios';
 import Confetti from 'layout/Confetti/Confetti';
+import ModalSlide from 'helpers/ModalSlide';
 
 function App() {
 
-  const [isVisible, setVisibility] = React.useState(true);
+  const [isVisible, setVisibility] = React.useState(false);
   const [loaderVisibility, setLoaderVisibility] = React.useState(true);
+  const [showConfetti, setShowConfetti] = React.useState(false);
   const [step, setStep] = React.useState(0);
 
   const [numberOfUses, setNumberOfUses] = React.useState(0);
@@ -24,7 +26,16 @@ function App() {
   const [stepFourthValue, setStepFourthValue] = React.useState<number | null>(null);
   const [stepFifthValue, setStepFifthValue] = React.useState<number>(0);
 
-  const [show, setShow] = React.useState(true);
+  const [show, setShow] = React.useState(false);
+  const [showModal, setShowModal] = React.useState(false);
+
+  React.useEffect(() => {
+    document.querySelector('.clicker')!.addEventListener('click', () => {
+      setVisibility(true);
+      setShowModal(true);
+      setShow(true);
+    })
+  })
 
 
   React.useEffect(() => {
@@ -52,6 +63,7 @@ function App() {
     setStepThirdValues([]);
     setStepFourthValue(null);
     setStepFifthValue(0);
+    setShowConfetti(false);
     setStep(0);
   };
 
@@ -64,30 +76,38 @@ function App() {
       setStepThirdValues([]);
       setStepFourthValue(null);
       setStepFifthValue(0);
+      setShowConfetti(false);
       setStep(step);
     }
     if (step === 2) {
       setStepThirdValues([]);
       setStepFourthValue(null);
       setStepFifthValue(0);
+      setShowConfetti(false);
       setStep(step);
     }
     if (step === 3) {
       setStepFourthValue(null);
       setStepFifthValue(0);
+      setShowConfetti(false);
       setStep(step);
     }
     if (step === 4) {
       setStepFifthValue(0);
+      setShowConfetti(false);
       setStep(step);
     }
   };
 
+  React.useEffect(() => {
+    if (step === 5) setLoaderVisibility(true);
+  },[step])
+
   return (
-    <div className="modal-comparison">
-      {step === 5 && <Confetti />}
+    <div className={`modal-comparison${isVisible ? '' : '--not-active'}`}>
+      {showConfetti && <Confetti />}
       <button className="warranty__button clicker b1" onClick={() => setVisibility(true)}>Odpal modal</button>
-      {isVisible && <div className="comparison">
+      {isVisible && <ModalSlide show={showModal}><div className="comparison">
         <Loader 
           loaderVisibility={loaderVisibility}
         />
@@ -110,6 +130,9 @@ function App() {
             stepFifthValue={stepFifthValue}
             setStepFifthValue={setStepFifthValue}
             resetResult={resetResult}
+            setLoaderVisibility={setLoaderVisibility}
+            loaderVisibility={loaderVisibility}
+            setShowConfetti={setShowConfetti}
             />
         <Footer 
           step={step} 
@@ -118,7 +141,7 @@ function App() {
           stepHandler={stepHandler}
           setNewCurrentStep={setNewCurrentStep}
         />
-      </div>}
+      </div></ModalSlide>}
     </div> 
   );
 }
