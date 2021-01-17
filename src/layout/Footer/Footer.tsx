@@ -13,45 +13,45 @@ interface Props {
 
 const Footer = (props: Props) => {
 
- const getCookie = (cname: string) => {
-    var name = cname + "=";
-    var decodedCookie = decodeURIComponent(document.cookie);
-    var ca = decodedCookie.split(';');
-    for (var i = 0; i <ca.length; i++) {
-        var c = ca[i];
-        while (c.charAt(0) == ' ') {
-            c = c.substring(1);
-        }
-        if (c.indexOf(name) == 0) {
-            return c.substring(name.length, c.length);
-        }
-    }
-    return false;
-}
+  let stepCTA = <></>;
 
-const setCookie = (cname: string, cvalue: string | boolean, secs: number) => {
-    var d = new Date();
-    d.setTime(d.getTime() + (secs*1000));
-    var expires = "expires="+ d.toUTCString();
-    document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
-}
-
-  const comparisonResultUpdate = () => {
-    if (!getCookie("porownywarka-counted")) {
-      // $.ajax({url:"https://najlepsibukmacherzy.pl/wp-content/themes/najlepsibukmacherzy/logic/kalkulator-bonusowy-counter.php", async: true, type: "POST", data: { "pass": 'DSF6YVjmKy' }})
-      axios.post("https://najlepsibukmacherzy.pl/wp-content/themes/najlepsibukmacherzy/logic/kalkulator-bonusowy-counter.php", { "pass": 'DSF6YVjmKy' });
-      setCookie("porownywarka-counted", true, 5)
-    }
+function getCookie (cname: any) {
+  var name = cname + "=";
+  var decodedCookie = decodeURIComponent(document.cookie);
+  var ca = decodedCookie.split(';');
+  for (var i = 0; i <ca.length; i++) {
+      var c = ca[i];
+      while (c.charAt(0) == ' ') {
+          c = c.substring(1);
+      }
+      if (c.indexOf(name) == 0) {
+          return c.substring(name.length, c.length);
+      }
   }
 
+  return false;
+}
+  
+function setCookie (cname: any, cvalue: any, secs: any) {
+  var d = new Date();
+  d.setTime(d.getTime() + (secs*1000));
+  var expires = "expires="+ d.toUTCString();
+  document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+}
 
-  let stepCTA = <></>;
+function comparisonResultUpdate ()  {
+console.log('Request')
+if (!getCookie("porownywarka-counted")) {
+axios.post("https://najlepsibukmacherzy.pl/wp-content/themes/najlepsibukmacherzy/logic/kalkulator-bonusowy-counter.php", { "pass": 'DSF6YVjmKy' })
+  setCookie("porownywarka-counted", true, 5)
+}
+}
   
   if ([0, 1, 3, 4, 5].includes(props.step)) {
-    stepCTA = <div className="warranty__legal"><p><Warranty /> 100% Legalni Bukmacherzy</p><span>Wersja narzędzia: 1.0</span></div>
+    stepCTA = <div className="warranty__legal"><span>Wersja narzędzia: 1.0</span></div>
   } 
   if (props.step === 2) {
-    stepCTA = <div className="warranty__legal"><p><Warranty /> 100% Legalni Bukmacherzy</p><span>Wersja narzędzia: 1.0</span></div>
+    stepCTA = <div className="warranty__legal"><span>Wersja narzędzia: 1.0</span></div>
   }
   if (props.step === 2 && props.stepThirdValues.length > 0) {
     stepCTA = <Button onClickHandler={props.stepHandler} content="NASTĘPNY KROK"/>

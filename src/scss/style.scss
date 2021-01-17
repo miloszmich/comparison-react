@@ -363,7 +363,7 @@ body.active > .comparison {
     border: 3px solid $main-color;
     padding: 30px;
     background-color: #ffffff;
-    @media (max-width: 650px) {
+    @media (max-width: 850px) {
       flex-direction: column;
       justify-content: center;
     }
@@ -382,7 +382,9 @@ body.active > .comparison {
   flex-direction: column;
   flex-basis: 40%;
   position: relative;
+  margin-top: 32px;
   margin-bottom: 32px;
+  align-items: center;
   @media (max-width: 650px) {
     flex-basis: 80%;
   }
@@ -394,9 +396,12 @@ body.active > .comparison {
     // }
   }
   &__button{
-    position: absolute;
-    bottom: -25px;
-    left: 15%;
+    // position: absolute;
+    // bottom: -72px;
+    // left: 15%;
+    > button {
+      margin: 16px auto 0 auto;
+    }
   }
 }
 
@@ -408,10 +413,13 @@ body.active > .comparison {
   padding-top: 24px;
   margin-left: 40px;
   justify-content: space-between;
-  max-height: 245px;
-  @media (max-width: 650px) {
+  // max-height: 245px;
+  margin-top: 32px;
+  margin-bottom: 32px;
+  @media (max-width: 850px) {
     flex-basis: 90%;
-    margin-left: 0px;
+    margin: 0;
+    min-height: 250px;
   }
   > * > p {
     line-height: 24px;
@@ -783,7 +791,7 @@ body.active > .comparison {
     align-items: center;
     justify-content: center;
     color: $text-color;
-    margin-bottom: 16px;
+    margin-bottom: 8px;
     z-index: 255;
     @media (max-width: 1050px){
       width: 52%;
@@ -862,6 +870,9 @@ body.active > .comparison {
       height: 17px;
       padding-bottom: 2px;
       padding-left: 8px;
+    }
+    > p {
+      margin: 0;
     }
     @media (max-width: 1050px){
       margin: 8px auto 16px auto;

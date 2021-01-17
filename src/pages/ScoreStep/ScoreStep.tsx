@@ -24,7 +24,7 @@ const ScoreStep = (props: Props) => {
   return (
     <div className="options__wrapper">
       <div className="options__left-column left-column">
-        <img className="left-column__image flip-scale-up-hor" 
+        <img className="left-column__image" 
         src={props.bookInfo.logo} 
         alt="bookmaker logo"
         />

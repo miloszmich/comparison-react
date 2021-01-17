@@ -30,7 +30,7 @@ function App() {
   const [showModal, setShowModal] = React.useState(false);
 
   React.useEffect(() => {
-    document.querySelector('.clicker')!.addEventListener('click', () => {
+    document.querySelector('.comparison-fire')!.addEventListener('click', () => {
       setVisibility(true);
       setShowModal(true);
       setShow(true);
@@ -99,6 +99,12 @@ function App() {
     }
   };
 
+  const closeHandler = () => {
+    setVisibility(false);
+    resetResult();
+  }
+
+
   React.useEffect(() => {
     if (step === 5) setLoaderVisibility(true);
   },[step])
@@ -106,12 +112,11 @@ function App() {
   return (
     <div className={`modal-comparison${isVisible ? '' : '--not-active'}`}>
       {showConfetti && <Confetti />}
-      <button className="warranty__button clicker b1" onClick={() => setVisibility(true)}>Odpal modal</button>
       {isVisible && <ModalSlide show={showModal}><div className="comparison">
         <Loader 
           loaderVisibility={loaderVisibility}
         />
-        <Close handleClose={() => setVisibility(false)}/>
+        <Close handleClose={() => closeHandler()}/>
         <Header />
         {step !== 5 && <Reasons numberOfUses={numberOfUses}/>}
           <StepContainer 
