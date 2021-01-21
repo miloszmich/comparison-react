@@ -67,15 +67,26 @@ const DefaultStep = (props: Props) => {
           logo: bd.nu_logo_widget
         }
       });
+
+      const fortuna = {
+        name: 'Fortuna',
+        promoCode: 'WiecejPLN',
+        site: 'www.efortuna.pl',
+        logo: 'https://najlepsibukmacherzy.pl/wp-content/uploads/2017/10/fortuna_tabela2.png'
+      }
+
+      usedBookData.push(fortuna);
       
       const updatedBooksData = [...stringParser(comparisonData.data.dane_bukow)].map(bd => {
         const foundedIndex = usedBookData.findIndex((ubd: any) => ubd.name.toUpperCase() === bd.buk.toUpperCase());
+        const standardPromoCode = usedBookData[foundedIndex] && usedBookData[foundedIndex].promoCode ? usedBookData[foundedIndex].promoCode : null;
+        const standardLogo = usedBookData[foundedIndex] && usedBookData[foundedIndex].logo ? usedBookData[foundedIndex].logo : bd.logo;
 
         return {
           ...bd,
-          promoCode: usedBookData[foundedIndex] && usedBookData[foundedIndex].promoCode ? usedBookData[foundedIndex].promoCode : null,
+          promoCode: standardPromoCode,
           site: usedBookData[foundedIndex] && usedBookData[foundedIndex].site ? usedBookData[foundedIndex].site : null,
-          logo: usedBookData[foundedIndex] && usedBookData[foundedIndex].logo ? usedBookData[foundedIndex].logo : bd.logo
+          logo: standardLogo
         }
       });
 
@@ -84,7 +95,6 @@ const DefaultStep = (props: Props) => {
       setDeviceAndSkillData(stringParser(comparisonData.data.urzadzenie_i_skill));
       setInfoAboutDisciplines(stringParser(comparisonData.data.dyscypliny_punkty));
 
-      // setLoaderVisibility(false);
     }
 
     getData();
@@ -200,7 +210,7 @@ const DefaultStep = (props: Props) => {
       {props.step === 4 && <p className="options__title--algorithm"><Op7/> <i>Algorytm wybierze atrakcyjną ofertę do wysokości Twojego pierwszego depozytu</i></p>}
       {props.step === 5 && <><br/><span className="options__title--return" onClick={() => props.resetResult()}><Return />Wybierz na nowo</span></>}
       </h3>
-    <section className="options__container">
+    <section className={`options__container${props.step === 2 ? '--discipline' : '--standard'}`}>
       {currentStepComponent}
     </section>
     </>
