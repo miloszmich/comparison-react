@@ -13,7 +13,7 @@ import { getBook } from 'helpers/setScore';
 
 interface Props {
   show: boolean;
-  stepHandler: () => void;
+  stepHandler: (stepModifier?: number) => void;
   step: number;
   setStep: (step: number) => void;
   stepFirstValue: number | null;
@@ -32,7 +32,7 @@ interface Props {
   setShowConfetti: (info: boolean) => void;
 }
 
-const DefaultStep = (props: Props) => {
+const StepContainer = (props: Props) => {
 
   const [booksData, setBooksData] = React.useState<Record<string, string>[]>([]);
   const [multipierData, setMultipierData] = React.useState<Record<string, Record<string, (string | number)>[]>>({});
@@ -40,6 +40,8 @@ const DefaultStep = (props: Props) => {
   const [infoAboutDisciplines, setInfoAboutDisciplines] = React.useState<Record<string, (string | number)>[]>([]);
 
   const [result, setResult] = React.useState<Record<string, string>>();
+
+  const [useBonus, setUseBonus] = React.useState<boolean>(false);
 
 
   const steps = [
@@ -74,8 +76,8 @@ const DefaultStep = (props: Props) => {
         site: 'www.efortuna.pl',
         logo: 'https://najlepsibukmacherzy.pl/wp-content/uploads/2017/10/fortuna_tabela2.png'
       }
-
-      usedBookData.push(fortuna);
+      
+      usedBookData.push(fortuna);   
       
       const updatedBooksData = [...stringParser(comparisonData.data.dane_bukow)].map(bd => {
         const foundedIndex = usedBookData.findIndex((ubd: any) => ubd.name.toUpperCase() === bd.buk.toUpperCase());
@@ -115,7 +117,8 @@ const DefaultStep = (props: Props) => {
           byDevice: deviceAndSkillData,
           multipiers: multipierData,
           disciplines: infoAboutDisciplines,
-        }
+        },
+        useBonus
       )
 
       setResult(result);
@@ -132,8 +135,15 @@ const DefaultStep = (props: Props) => {
       props.stepHandler();
     }
     if (props.step === 3) {
-      props.setStepFourthValue(value);
-      props.stepHandler();
+      if (value === 0) {
+        props.setStepFourthValue(value);
+        props.stepHandler();
+        setUseBonus(true);
+      } else {
+        props.setStepFourthValue(value);
+        props.stepHandler(1);
+        setUseBonus(false);
+      }
     }
 
 
@@ -183,6 +193,7 @@ const DefaultStep = (props: Props) => {
         tekstIndywidualnyUrzadzenie={result.tekstIndywidualnyUrzadzenie}
         setLoaderVisibility={props.setLoaderVisibility}
         setShowConfetti={props.setShowConfetti}
+        infoAboutUsingBonus={props.stepFourthValue || 0}
       /> : <></>
       break;
   }
@@ -195,19 +206,19 @@ const DefaultStep = (props: Props) => {
   },[props.step])
 
   return (
-    !props.loaderVisibility ? <main style={{overflow: 'hidden'}}>
+    !props.loaderVisibility ? <main style={{overflow: 'hidden', minHeight: '410px'}}>
       <Slide show={props.show} className="comparison__options options">
         <>
     <h3 className={`options__title ${props.step === 5 ? 'options__title--last-step' : ''}`}>
       <span className={`options__title${props.step < 5 ? '--step' : '--info'}`}>
-        {props.step < 5 ? `${props.step + 1}/5. ` : <>{`Mamy to! Twoje odpowiedzi sugerują, `}<br/></>}
+        {props.step < 5 ? `${props.step + 1}/5. ` : <>{`Mamy to! 🎉 Twoje odpowiedzi sugerują, `}<br/></>}
         </span>
         <span className={`options__title${props.step < 5 ? '--desc' : '--info'}`}>
           {props.step < 5 
             ? steps[props.step] 
             : result && result.result && <span className={`options__title${props.step < 5 ? '--desc' : '--info'}`}>{`że najlepszym bukmacherem dla Ciebie może być `}<a className="options__result--title-link" href={booksData.find(bd => bd.buk === result.result)!.link}>{result.result}</a></span>}
         </span>
-      {props.step === 4 && <p className="options__title--algorithm"><Op7/> <i>Algorytm wybierze atrakcyjną ofertę do wysokości Twojego pierwszego depozytu</i></p>}
+      {props.step === 4 && <p className="options__title--algorithm"><Op7/> <i>Algorytm wybierze dopasowaną ofertę do wysokości Twojego pierwszego depozytu</i></p>}
       {props.step === 5 && <><br/><span className="options__title--return" onClick={() => props.resetResult()}><Return />Wybierz na nowo</span></>}
       </h3>
     <section className={`options__container${props.step === 2 ? '--discipline' : '--standard'}`}>
@@ -219,4 +230,4 @@ const DefaultStep = (props: Props) => {
   )
 }
 
-export default DefaultStep
+export default StepContainer

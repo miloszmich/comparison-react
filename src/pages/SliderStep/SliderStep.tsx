@@ -14,7 +14,8 @@ const SliderStep = (props: Props) => {
   const sliderInputRef = React.useRef<HTMLInputElement | null>(null);
 
   React.useEffect(() => {
-    const newTrackValue = (sliderValue / 2000 * 100) > 85 ? `${(sliderValue / 2000 * 100)}% - 25.5px` : `${(sliderValue / 2000 * 100)}%`;
+    const editedSliderValue = sliderValue > 5000 ? 5000 : sliderValue;
+    const newTrackValue = (editedSliderValue / 5000 * 100) > 85 ? `${(editedSliderValue / 5000 * 100)}% - 25.5px` : `${(editedSliderValue / 5000 * 100)}%`;
     setTrackWidth(newTrackValue);
   }, [sliderValue])
 
@@ -35,7 +36,7 @@ const SliderStep = (props: Props) => {
     const parsedValue = Number(value);
     if (parsedValue === null || parsedValue === undefined) return setSliderValue(0);
     if (parsedValue < 0) return setSliderValue(0);
-    if  (parsedValue  > 2000) return setSliderValue(2000);
+    // if  (parsedValue  > 5000) return setSliderValue(5000);
     return setSliderValue(parsedValue);
   }
 
@@ -48,7 +49,7 @@ const SliderStep = (props: Props) => {
         ref={sliderInputRef}
         type="range" 
         min="0" 
-        max="2000" 
+        max="5000" 
         value={sliderValue}  
         step="10" 
         className="slider__input" 
@@ -60,7 +61,7 @@ const SliderStep = (props: Props) => {
     <div className="slider__label">
       <span className="slider__label--value">0</span>
       <span className="slider__label--value">1000</span>
-      <span className="slider__label--value">2000+</span>
+      <span className="slider__label--value">5000+</span>
     </div>
   </div>
   <div className="slider__value value">

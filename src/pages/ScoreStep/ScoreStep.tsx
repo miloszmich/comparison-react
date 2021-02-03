@@ -13,7 +13,7 @@ interface Props {
   tekstIndywidualnyUrzadzenie: string;
   setLoaderVisibility: (info: boolean) => void;
   setShowConfetti: (info: boolean) => void;
-
+  infoAboutUsingBonus: number;
 }
 
 const ScoreStep = (props: Props) => {
@@ -25,6 +25,10 @@ const ScoreStep = (props: Props) => {
     navigator.clipboard.writeText(props.bookInfo.promoCode);
     setCopyTextInfo(' Skopiowano!')
   };
+
+  let infoAboutBonus = <></>;
+  if (props.infoAboutUsingBonus === 0) infoAboutBonus = <p><span className="right-column__plus"><Check /></span><span className="right-column__advantage"><b>Wysoki wynik oferty powitalnej</b> przy podanej wysokości depozytu</span></p>;
+  if (props.infoAboutUsingBonus === 1) infoAboutBonus = <p><span className="right-column__plus"><Check /></span><span className="right-column__advantage"><b>Wysoki wynik oferty powitalnej</b> bez depozytu</span></p>;
 
   return (
     <div className="options__wrapper">
@@ -38,15 +42,15 @@ const ScoreStep = (props: Props) => {
       </div>
       <div className="options__right-column right-column">
         <div className="right-column__top">
-          <p><span className="right-column__plus"><Check /></span><span className="right-column__advantage">{`Najlepszy dla ${props.tekstIndywidualnyPoziom}`}</span></p>
-          <p><span className="right-column__plus"><Check /></span><span className="right-column__advantage">{`Dobrze oceniana aplikacja na ${props.tekstIndywidualnyUrzadzenie}`}</span></p>
-          <p><span className="right-column__plus"><Check /></span><span className="right-column__advantage">{`Bogata oferta na ${props.tekstIndywidualnyDyscypliny}`}</span></p>
-          <p><span className="right-column__plus"><Check /></span><span className="right-column__advantage">Wysoki wynik oferty powitalnej przy podanej wysokości depozytu</span></p>
+          <p><span className="right-column__plus"><Check /></span><span className="right-column__advantage">Odpowiedni dla <b>{props.tekstIndywidualnyPoziom}</b></span></p>
+          <p><span className="right-column__plus"><Check /></span><span className="right-column__advantage">Dostępny a <b>{props.tekstIndywidualnyUrzadzenie}</b></span></p>
+          <p><span className="right-column__plus"><Check /></span><span className="right-column__advantage">Bogata oferta na <b>{props.tekstIndywidualnyDyscypliny}</b></span></p>
+          {infoAboutBonus}
           {/* <p><span className="right-column__plus--last"></span>
             <span className="right-column__advantage">
             </span>
           </p> */}
-          <p><span className="right-column__plus"><Check /></span><span className="right-column__advantage">Szybka rejestracja bez dowodu</span></p>
+          {props.bookInfo.buk !== 'forBET' && props.bookInfo.buk !== 'ETOTO' ? <p><span className="right-column__plus"><Check /></span><span className="right-column__advantage">Rejestracja bez dowodu (konto tymczasowe)</span></p> : <></>}
         </div>
         <div className="right-column__bottom">
         {props.bookInfo.promoCode && <p><span className="right-column__info">{`Kod do rejestracji: `}</span><input type="text" readOnly={true} className="right-column__info--var" value={props.bookInfo.promoCode} /><span className="right-column__info--copy" onClick={copyText}>

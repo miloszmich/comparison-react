@@ -51,10 +51,11 @@ function App() {
     getData();
   }, []);
 
-  const stepHandler = () => {
+  const stepHandler = (stepModifier?: number) => {
     setShow(false);
     setTimeout(() => {
-      setStep(step + 1);
+      const stepToSet = stepModifier ? step + 1 + stepModifier : step + 1;
+      setStep(stepToSet);
       setShow(true);
     }, 1000)
   }
@@ -113,7 +114,7 @@ function App() {
 
   return (
     <div className={`modal-comparison${isVisible ? '' : '--not-active'}`}>
-       {/* <button type="button" className="warranty__button comparison-fire b1" onClick={() => setVisibility(true)}>Odpal modal</button> */}
+       <button type="button" className="warranty__button comparison-fire b1" onClick={() => setVisibility(true)}>Odpal modal</button>
       {showConfetti && <Confetti />}
       {isVisible && <ModalSlide show={showModal}><div className="comparison">
         <Loader 

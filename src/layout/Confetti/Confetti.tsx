@@ -15,7 +15,7 @@ const Confetti = (props: Props) => {
   },[])
 
   const confettiGenerator = () => {
-    let i = 1500;
+    let i = 2000;
     const confetti: JSX.Element[] = [];
     const wrapper = document.createElement('div');
     wrapper.classList.add('confetti-wrapper');
