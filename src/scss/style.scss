@@ -462,6 +462,7 @@ body.active > .comparison {
   &__image {
     width: 364px;
     max-width: 90%;
+    max-height: 160px;
     margin: 0 auto 16px auto;
   }
   &__button{
@@ -497,9 +498,6 @@ body.active > .comparison {
     }
     > * > span {
       font-size: 14px;
-      @media (max-width: 750px) {
-        font-size: 10px;
-      }
     }
   }
   &__bottom {

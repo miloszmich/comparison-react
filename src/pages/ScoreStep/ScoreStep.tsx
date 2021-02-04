@@ -43,7 +43,7 @@ const ScoreStep = (props: Props) => {
       <div className="options__right-column right-column">
         <div className="right-column__top">
           <p><span className="right-column__plus"><Check /></span><span className="right-column__advantage">Odpowiedni dla <b>{props.tekstIndywidualnyPoziom}</b></span></p>
-          <p><span className="right-column__plus"><Check /></span><span className="right-column__advantage">Dostępny a <b>{props.tekstIndywidualnyUrzadzenie}</b></span></p>
+          <p><span className="right-column__plus"><Check /></span><span className="right-column__advantage">Dostępny <b>{props.tekstIndywidualnyUrzadzenie}</b></span></p>
           <p><span className="right-column__plus"><Check /></span><span className="right-column__advantage">Bogata oferta na <b>{props.tekstIndywidualnyDyscypliny}</b></span></p>
           {infoAboutBonus}
           {/* <p><span className="right-column__plus--last"></span>

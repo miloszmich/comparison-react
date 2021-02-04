@@ -60,7 +60,7 @@ const SliderStep = (props: Props) => {
     </div>
     <div className="slider__label">
       <span className="slider__label--value">0</span>
-      <span className="slider__label--value">1000</span>
+      <span className="slider__label--value">2500</span>
       <span className="slider__label--value">5000+</span>
     </div>
   </div>
