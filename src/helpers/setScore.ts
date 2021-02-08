@@ -13,6 +13,7 @@ interface Data {
   byDevice: Record<string, Record<string, (string | number)>[]>;
   multipiers: Record<string, Record<string, (string | number)>[]>; //multipierData
   disciplines: Record<string, (string | number)>[];
+  depositInfo: Record<string, (string | number)>[]
 }
 
 interface Result {
@@ -137,9 +138,18 @@ export const getBook = (score: Score, data: Data, useBonus: boolean) => {
   for (const book in results) {
     resultWithDepositMultipier[book] = Number((results[book] * mapOfDepositMultipiers[book]).toFixed());
   };
+
+  if (score.fourthStep !== 'no-bonus') {
+    data.depositInfo.forEach(deposit => {
+      if (score.fifthStep < deposit.minDep) {
+        results[deposit.buk] = 0
+        resultWithDepositMultipier[deposit.buk] = 0
+      }
+    });
+  }
   
   const result = useBonus 
-    ? Object.keys(resultWithDepositMultipier).reduce((a, b) => results[a] > results[b] ? a : b) 
+    ? Object.keys(resultWithDepositMultipier).reduce((a, b) => resultWithDepositMultipier[a] > resultWithDepositMultipier[b] ? a : b) 
     : Object.keys(results).reduce((a, b) => results[a] > results[b] ? a : b);
     
   const tekstIndywidualnyPoziom 

@@ -105,6 +105,10 @@ const StepContainer = (props: Props) => {
 
   React.useEffect(() => {
     if (props.step === 5) {
+
+      const depositInfo = booksData.map(b => {
+        return { buk: b.buk, minDep: b.minDep }
+      })
       
       const result = getBook(
         {
@@ -117,6 +121,7 @@ const StepContainer = (props: Props) => {
           byDevice: deviceAndSkillData,
           multipiers: multipierData,
           disciplines: infoAboutDisciplines,
+          depositInfo
         },
         useBonus
       )
