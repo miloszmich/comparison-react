@@ -32,8 +32,8 @@
 
 	if (depozyt >= 5) {
 		cashback = depozyt;
-		if (cashback > 200) {
-			cashback = 200;
+		if (depozyt >= 500) {
+			cashback = 500;
 		}
 	} else {
 		depozyt = 0;
@@ -47,7 +47,7 @@
 	let bonus = (depozyt < 1000) ? depozyt : 1000;
 	let cashback = 0;
 
-	if (depozyt == 0) { return 60; }
+	// if (depozyt == 0) { return 60; }
 
 	if (depozyt < 1) {
 		depozyt = 0;
@@ -72,30 +72,18 @@
 
  const obliczBonusBetfan = (kwota: string): number => {
 	let depozyt = parseFloat(kwota);
-	let bonus = (depozyt < 777) ? depozyt : 777;
-	let cashback = 0;
-	let kupony = 0;
-
-	if (depozyt < 1) {
+	let bonus = 0;
+	let cashback = depozyt;
+	
+	if (depozyt < 2) {
 		depozyt = 0;
 	}
 
-	if (depozyt < 20) {
-		bonus = 0;
-	}
 
-	if (depozyt >= 20) {
-		kupony = 10;
-		cashback = depozyt * 0.88;
+	if (depozyt < 50) cashback = 0;
+	if (cashback > 600) cashback = 600;
 
-		if (cashback > 100) {
-			cashback = 100;
-		}
-	}
-
-	bonus = depozyt + bonus + cashback + kupony;
-
-	return bonus;
+	return depozyt + bonus + cashback;
 }
 
 
@@ -104,6 +92,15 @@
 	let bonus = (depozyt < 1200) ? depozyt : 1200;
 	let cashback = 0;
 	let cashback2 = 0;
+
+	let additionalCashBack = 0;
+	if (depozyt > 59) additionalCashBack = 1.76;
+	if (depozyt > 64) additionalCashBack = 6.16;
+	if (depozyt > 74) additionalCashBack = 14.96;
+	if (depozyt > 79) additionalCashBack = 19.36;
+	if (depozyt > 80) additionalCashBack = 20;
+
+	
 
 	if (depozyt < 1) {
 		bonus = 0;
@@ -119,7 +116,8 @@
 
 	let freebet = 29;
 
-	bonus = depozyt + bonus + cashback + cashback2 + freebet;
+	//Temporary add 20 as additional cashback
+	bonus = depozyt + bonus + cashback + cashback2 + freebet + additionalCashBack;
 
 	return bonus;
 }
@@ -172,7 +170,7 @@
 		return 0;
 	}
 
-// 	bonus = (2 * depozyt < 200) ? 2 * depozyt : 200;
+	bonus = (2 * depozyt < 200) ? 2 * depozyt : 200;
 
 	return depozyt + bonus;
 }
@@ -187,7 +185,7 @@
 		bonus = (depozyt <= 500) ? depozyt : 500;
 	}
 
-	return depozyt + bonus + bonusStart;
+	return depozyt < 4 ? bonusStart : depozyt + bonus + bonusStart;
 }
 
 
@@ -218,12 +216,13 @@
  const obliczBonusLvbet2 = (kwota: string): number => {
 	let depozyt = parseFloat(kwota);
 	let bonus = 0;
+	let freebet = 20;
 
-	if (depozyt < 10) {
-		return 0;
+	if (depozyt > 10) {
+		bonus = depozyt / 10;
 	}
 
-	if (depozyt >= 10) {
+	if (depozyt >= 50) {
 		bonus = depozyt;
 	}
 
@@ -231,7 +230,7 @@
 		bonus = 2000;
 	}
 
-	return depozyt + bonus;
+	return depozyt < 10 ? freebet : depozyt + bonus + freebet;
 }
 
  const obliczBonusTotalbet = (kwota: string): number => {

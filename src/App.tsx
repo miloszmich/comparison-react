@@ -30,15 +30,12 @@ function App() {
   const [showModal, setShowModal] = React.useState(false);
 
   React.useEffect(() => {
-    document.querySelector('.comparison-fire')!.addEventListener('click', () => {
+    if (window.location.hash === '#dobierajka') {
       setVisibility(true);
       setShowModal(true);
       setShow(true);
-    });
-    document.querySelector("#root")?.addEventListener("submit", (e) => {
-        e.preventDefault();
-      })
-  })
+    }
+  },[])
 
   React.useEffect(() => {
     const getData = async () => {
@@ -114,7 +111,7 @@ function App() {
 
   return (
     <div className={`modal-comparison${isVisible ? '' : '--not-active'}`}>
-       <button type="button" className="warranty__button comparison-fire b1" onClick={() => setVisibility(true)}>Odpal modal</button>
+       {/* <button type="button" className="warranty__button comparison-fire b1" onClick={() => setVisibility(true)}>Odpal modal</button> */}
       {showConfetti && <Confetti />}
       {isVisible && <ModalSlide show={showModal}><div className="comparison">
         <Loader 
