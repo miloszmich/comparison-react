@@ -8,14 +8,6 @@ interface Score {
   fifthStep: number;
 }
 
-interface Data {
-  // byDevice: { [key: string]: { [key: string]: string | number }[] }; //deviceAndSkillData
-  byDevice: Record<string, Record<string, (string | number)>[]>;
-  multipiers: Record<string, Record<string, (string | number)>[]>; //multipierData
-  disciplines: Record<string, (string | number)>[];
-  depositInfo: Record<string, (string | number)>[]
-}
-
 interface Result {
   bookmaker: string; 
   skill: string; 
@@ -57,23 +49,30 @@ const nameSet = (name: string): string => {
   return discipline;
 }
 
-const pointHandler = (result: Result, data: Data) => {
+const pointHandler = (result: Result, data: Record<string, Record<string, string | number>>) => {
  
-  const pointBySkill = data.byDevice[result.bookmaker].find(b => b.skills === result.skill)!.point;
-  const pointByDevice = result.device === "no-preferrences" ? 0 : data.byDevice[result.bookmaker].find(b => b.skills === result.skill)![result.device];
-  const infoAboutMultipiers = data.multipiers[result.bookmaker]!.find(b => b.skills === result.skill);
+  console.log(result);
+  console.log(data);
+  const pointBySkill = data[result.bookmaker][result.skill];
+  const pointByDevice = data[result.bookmaker][result.device];
+  // const infoAboutMultipiers = data.multipiers[result.bookmaker]!.find(b => b.skills === result.skill);
   //!Temporary commented - for future version
   // const pointsByMultipiers = Number(infoAboutMultipiers!.cashout) + Number(infoAboutMultipiers!.tv) + Number(infoAboutMultipiers!.vip) + Number(infoAboutMultipiers!.special);
   const pointsByMultipiers = 0;
-  const pointsByDisciplines: number[] = data.disciplines.map(d => {
-    if (result.usesDisciplines.includes(d.name as string)) return Number(d[result.bookmaker]);
-    else return 0;
-  });
+  const pointsByDisciplines: number[] = result.usesDisciplines.map(ud => {
+    return Number(data[result.bookmaker][ud]);
+  })
   
   return [Number(pointBySkill), Number(pointByDevice), Number(pointsByMultipiers), ...pointsByDisciplines];
 }
 
-export const getBook = (score: Score, data: Data, useBonus: boolean) => {
+export const getBook = (
+  score: Score, 
+  data: Record<string, Record<string, string | number>>, 
+  depositInfo: Record<string, number | string>[], 
+  useBonus: boolean
+) => {
+
   const punktyFortuna: number[] = [];
   const punktyBetfan: number[] = [];
   const punktyTotalbet: number[] = [];
@@ -85,6 +84,8 @@ export const getBook = (score: Score, data: Data, useBonus: boolean) => {
   const punktyETOTO: number[] = [];
   const punktyPZBuk: number[] = [];
 
+  
+
   const dataToCalc: Result = {
     bookmaker: '',
     skill: score.firstStep,
@@ -93,13 +94,13 @@ export const getBook = (score: Score, data: Data, useBonus: boolean) => {
   }
 
   punktyFortuna.push(...pointHandler({...dataToCalc, bookmaker: 'Fortuna'}, data));
-  punktyBetfan.push(...pointHandler({ ...dataToCalc, bookmaker: "Betfan" }, data));
-  punktyTotalbet.push(...pointHandler({ ...dataToCalc, bookmaker: "Totalbet" }, data));
+  punktyBetfan.push(...pointHandler({ ...dataToCalc, bookmaker: "BETFAN" }, data));
+  punktyTotalbet.push(...pointHandler({ ...dataToCalc, bookmaker: "TotalBet" }, data));
   punktySTS.push(...pointHandler({ ...dataToCalc, bookmaker: "STS" }, data));
   punktyTotolotek.push(...pointHandler({ ...dataToCalc, bookmaker: "Totolotek" }, data));
   punktyforBET.push(...pointHandler({ ...dataToCalc, bookmaker: "forBET" }, data));
   punktyBetclic.push(...pointHandler({ ...dataToCalc, bookmaker: "Betclic" }, data));
-  punktyLVBET.push(...pointHandler({ ...dataToCalc, bookmaker: "LVBET" }, data));
+  punktyLVBET.push(...pointHandler({ ...dataToCalc, bookmaker: "LVBet" }, data));
   punktyETOTO.push(...pointHandler({ ...dataToCalc, bookmaker: "ETOTO" }, data));
   punktyPZBuk.push(...pointHandler({ ...dataToCalc, bookmaker: "PZBuk" }, data));
 
@@ -139,26 +140,26 @@ export const getBook = (score: Score, data: Data, useBonus: boolean) => {
     resultWithDepositMultipier[book] = Number((results[book] * mapOfDepositMultipiers[book]).toFixed());
   };
 
-  if (score.fourthStep !== 'no-bonus') {
-    data.depositInfo.forEach(deposit => {
+  if (score.fourthStep === 'bonus-to-deposit') {
+    depositInfo.forEach(deposit => {
       if (score.fifthStep < deposit.minDep) {
         results[deposit.buk] = 0
         resultWithDepositMultipier[deposit.buk] = 0
       }
     });
   }
-  
+
   const result = useBonus 
     ? Object.keys(resultWithDepositMultipier).reduce((a, b) => resultWithDepositMultipier[a] > resultWithDepositMultipier[b] ? a : b) 
     : Object.keys(results).reduce((a, b) => results[a] > results[b] ? a : b);
     
   const tekstIndywidualnyPoziom 
-    = score.firstStep === "weak" ? "początkujących graczy" 
-    : score.firstStep === "medium" ? "graczy z doświadczeniem" 
+    = score.firstStep === "debiutant" ? "początkujących graczy" 
+    : score.firstStep === "średniozaawansowany" ? "graczy z doświadczeniem" 
     : "doświadczonych i wymagających graczy";
   const tekstIndywidualnyUrzadzenie 
     = score.secondStep === "mobile" ? "na smartfonach i tabletach"
-    : score.secondStep === "comp" ? "w przeglądarce komputera"
+    : score.secondStep === "desktop" ? "w przeglądarce komputera"
     : "na każdym urządzeniu";
   const tekstIndywidualnyDyscypliny = score.thirdStep.map(discipline => nameSet(discipline)).join(", ");
 

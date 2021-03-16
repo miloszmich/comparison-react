@@ -30,14 +30,21 @@ function App() {
   const [showModal, setShowModal] = React.useState(false);
 
   React.useEffect(() => {
-    document.querySelector('[href="#dobierajka"]')!.addEventListener('click', () => {
+    document.querySelectorAll('[href="#starter-bukmacherski"]')!.forEach(a => a.addEventListener('click', () => {
       setVisibility(true);
       setShowModal(true);
       setShow(true);
-    });
+      document.body.classList.add('blocked-body');
+    }));
     document.querySelector("#root")?.addEventListener("submit", (e) => {
         e.preventDefault();
       })
+
+    if (window.location.hash === '#starter-bukmacherski') {
+      setVisibility(true);
+      setShowModal(true);
+      setShow(true);
+    }
   },[])
 
   React.useEffect(() => {
@@ -105,6 +112,7 @@ function App() {
   const closeHandler = () => {
     setVisibility(false);
     resetResult();
+    document.body.classList.remove('blocked-body');
   }
 
 
@@ -114,7 +122,7 @@ function App() {
 
   return (
     <div className={`modal-comparison${isVisible ? '' : '--not-active'}`}>
-       <a href='#dobierajka' >Odpal modal</a>
+      {/* <a href="#starter-bukmacherski">Odpal</a> */}
       {showConfetti && <Confetti />}
       {isVisible && <ModalSlide show={showModal}><div className="comparison">
         <Loader 

@@ -3,16 +3,16 @@
   { 
   title: 'Jestem debiutantem', 
   description: ['To moje pierwsze kroki w obstawianiu'],
-  result:'weak'
+  result:'debiutant'
  }, 
   { 
   title: 'Jestem doświadczony', 
   description: ['Wiem co to AKO, marża, livebetting i freebet'],
-  result: 'medium'}, 
+  result: 'średniozaawansowany'}, 
   { 
   title: 'Jestem legendą', 
   description: ['Jestem postrachem bukmacherów!'],
-  result: 'strong' }
+  result: 'legenda' }
 ];
 
 export const secondStep = [
@@ -23,11 +23,11 @@ result: 'mobile' },
   { 
   title: 'Na komputerze', 
   description: ['Przejrzysta i funkcjonalna strona', 'Wygodne przeglądanie oferty'],
-result: 'comp' }, 
+result: 'desktop' }, 
   { 
   title: 'Jeszcze nie wiem', 
   description: ['Nie mam preferencji'],
-result:'no-preferrences' }
+result:'both' }
 ];
 
 export const thirdStep = [
@@ -62,7 +62,7 @@ result:'esport' },
   { 
   title: 'Wirtualne Sporty', 
   selected: false,
-result: 'sporty wirtualne' }, 
+result: 'wirtualne sporty' }, 
   { 
   title: 'Inne', 
   selected: false,

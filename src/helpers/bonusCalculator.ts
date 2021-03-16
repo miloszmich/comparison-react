@@ -167,10 +167,14 @@
 	let bonus = 0;
 
 	if (depozyt < 1) {
-		return 0;
+		return depozyt;
 	}
 
-	bonus = (2 * depozyt < 200) ? 2 * depozyt : 200;
+	bonus = depozyt;
+	
+	if (depozyt > 1500) {
+		bonus = 1500;
+	}
 
 	return depozyt + bonus;
 }

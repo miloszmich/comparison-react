@@ -10,6 +10,7 @@ import axios from 'axios';
 import { firstStep, fourthStep, secondStep, thirdStep } from 'helpers/standardData';
 import ScoreStep from './ScoreStep/ScoreStep';
 import { getBook } from 'helpers/setScore';
+import { pointConverter } from 'helpers/countPoints';
 
 interface Props {
   show: boolean;
@@ -35,10 +36,7 @@ interface Props {
 const StepContainer = (props: Props) => {
 
   const [booksData, setBooksData] = React.useState<Record<string, string>[]>([]);
-  const [multipierData, setMultipierData] = React.useState<Record<string, Record<string, (string | number)>[]>>({});
-  const [deviceAndSkillData, setDeviceAndSkillData] = React.useState<Record<string, Record<string, (string | number)>[]>>({});
-  const [infoAboutDisciplines, setInfoAboutDisciplines] = React.useState<Record<string, (string | number)>[]>([]);
-
+  const [booksScore, setBooksScore] = React.useState<Record<string, Record<string, string | number>>>({});
   const [result, setResult] = React.useState<Record<string, string>>();
 
   const [useBonus, setUseBonus] = React.useState<boolean>(false);
@@ -60,6 +58,7 @@ const StepContainer = (props: Props) => {
     const getData = async () => {
       const comparisonData = await axios.get('https://najlepsibukmacherzy.pl/wp-json/wp/v2/polaspecjalne/8689/');
       const bookData = await axios.get('https://najlepsibukmacherzy.pl/wp-json/wp/v2/bukmacherzy/');
+      const tableData = await axios.get('http://gsx2json.com/api?id=15UiwuXR6eQkPFBdDVaZTDARw1LoMX_UpWm2S1e94-d0');    
 
       const usedBookData = bookData.data.map((bd: any) => {
         return {
@@ -92,11 +91,13 @@ const StepContainer = (props: Props) => {
         }
       });
 
+      console.log(updatedBooksData);
       setBooksData(updatedBooksData);
-      setMultipierData(stringParser(comparisonData.data.mnozniki_dodatkow));
-      setDeviceAndSkillData(stringParser(comparisonData.data.urzadzenie_i_skill));
-      setInfoAboutDisciplines(stringParser(comparisonData.data.dyscypliny_punkty));
 
+      console.log(tableData.data.rows);
+      const booksScore = pointConverter(tableData.data.rows);
+      console.log(booksScore);
+      setBooksScore(booksScore);
     }
 
     getData();
@@ -110,6 +111,8 @@ const StepContainer = (props: Props) => {
         return { buk: b.buk, minDep: b.minDep }
       })
       
+      console.log(booksScore);
+
       const result = getBook(
         {
           firstStep: firstStep[props.stepFirstValue as number].result,
@@ -117,12 +120,9 @@ const StepContainer = (props: Props) => {
           thirdStep: props.stepThirdValues.map(v => thirdStep[v].result),
           fourthStep: fourthStep[props.stepFourthValue as number].result,
           fifthStep: props.stepFifthValue,
-        }, {
-          byDevice: deviceAndSkillData,
-          multipiers: multipierData,
-          disciplines: infoAboutDisciplines,
-          depositInfo
-        },
+        }, 
+        booksScore,
+        depositInfo,
         useBonus
       )
 

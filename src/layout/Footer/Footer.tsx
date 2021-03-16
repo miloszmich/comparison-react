@@ -1,7 +1,6 @@
 import React from 'react'
 import { ReactComponent as Warranty } from './assets/warranty.svg'
 import Button from 'layout/shared/Button/Button';
-import axios from 'axios';
 
 interface Props {
   step: number;
@@ -14,43 +13,6 @@ interface Props {
 const Footer = (props: Props) => {
 
   let stepCTA = <></>;
-
-  function getCookie (cname: string) {
-    var name = cname + "=";
-    var decodedCookie = decodeURIComponent(document.cookie);
-    var ca = decodedCookie.split(';');
-    for (var i = 0; i <ca.length; i++) {
-        var c = ca[i];
-        while (c.charAt(0) == ' ') {
-            c = c.substring(1);
-        }
-        if (c.indexOf(name) == 0) {
-            return c.substring(name.length, c.length);
-        }
-    }
-
-    return false;
-}
-
-function setCookie (cname: string, cvalue: boolean, secs: number) {
-    var d = new Date();
-    d.setTime(d.getTime() + (secs*1000));
-    var expires = "expires="+ d.toUTCString();
-    document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
-}
-
-const comparisonResultUpdate = () => {
-  if (!getCookie("porownywarka-counted")) {
-  axios.post("https://najlepsibukmacherzy.pl/wp-content/themes/najlepsibukmacherzy/logic/kalkulator-bonusowy-counter.php", { "pass": 'DSF6YVjmKy' }, {
-    headers: {
-    "Authorization": "Basic bHVrYXN6Oms1aW8gMlBRNyA3Z00wIG1ocDMgMXJJUCBKZ3lh",
-    }
-  }
-);   
-setCookie("porownywarka-counted", true, 5)
-}
-
-}
   
   if ([0, 1, 3, 4, 5].includes(props.step)) {
     stepCTA = <div className="warranty__legal"><span>made by najlepsibukmacherzy.pl</span><span>Wersja narzędzia: 1.0</span></div>
@@ -65,7 +27,6 @@ setCookie("porownywarka-counted", true, 5)
   if (props.step === 4 && props.stepFifthValue !== 0) {
     stepCTA = <Button isSubmit={true} onClickHandler={() => {
       props.stepHandler();
-      comparisonResultUpdate();
     }} content="OK! POKAŻ WYNIK!"/>
   }
  
