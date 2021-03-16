@@ -91,12 +91,8 @@ const StepContainer = (props: Props) => {
         }
       });
 
-      console.log(updatedBooksData);
       setBooksData(updatedBooksData);
-
-      console.log(tableData.data.rows);
       const booksScore = pointConverter(tableData.data.rows);
-      console.log(booksScore);
       setBooksScore(booksScore);
     }
 
@@ -110,8 +106,6 @@ const StepContainer = (props: Props) => {
       const depositInfo = booksData.map(b => {
         return { buk: b.buk, minDep: b.minDep }
       })
-      
-      console.log(booksScore);
 
       const result = getBook(
         {

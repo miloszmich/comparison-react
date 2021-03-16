@@ -50,9 +50,6 @@ const nameSet = (name: string): string => {
 }
 
 const pointHandler = (result: Result, data: Record<string, Record<string, string | number>>) => {
- 
-  console.log(result);
-  console.log(data);
   const pointBySkill = data[result.bookmaker][result.skill];
   const pointByDevice = data[result.bookmaker][result.device];
   // const infoAboutMultipiers = data.multipiers[result.bookmaker]!.find(b => b.skills === result.skill);
