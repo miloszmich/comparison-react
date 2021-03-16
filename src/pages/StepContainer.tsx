@@ -58,7 +58,7 @@ const StepContainer = (props: Props) => {
     const getData = async () => {
       const comparisonData = await axios.get('https://najlepsibukmacherzy.pl/wp-json/wp/v2/polaspecjalne/8689/');
       const bookData = await axios.get('https://najlepsibukmacherzy.pl/wp-json/wp/v2/bukmacherzy/');
-      const tableData = await axios.get('http://gsx2json.com/api?id=15UiwuXR6eQkPFBdDVaZTDARw1LoMX_UpWm2S1e94-d0');    
+      const tableData = await axios.get('https://gsx2json.com/api?id=15UiwuXR6eQkPFBdDVaZTDARw1LoMX_UpWm2S1e94-d0');    
 
       const usedBookData = bookData.data.map((bd: any) => {
         return {
