@@ -137,14 +137,14 @@ export const getBook = (
     resultWithDepositMultipier[book] = Number((results[book] * mapOfDepositMultipiers[book]).toFixed());
   };
 
-  if (score.fourthStep === 'bonus-to-deposit') {
-    depositInfo.forEach(deposit => {
-      if (score.fifthStep < deposit.minDep) {
-        results[deposit.buk] = 0
-        resultWithDepositMultipier[deposit.buk] = 0
-      }
-    });
-  }
+  // if (score.fourthStep === 'bonus-to-deposit') {
+  //   depositInfo.forEach(deposit => {
+  //     if (score.fifthStep < deposit.minDep) {
+  //       results[deposit.buk] = 0
+  //       resultWithDepositMultipier[deposit.buk] = 0
+  //     }
+  //   });
+  // }
 
   const result = useBonus 
     ? Object.keys(resultWithDepositMultipier).reduce((a, b) => resultWithDepositMultipier[a] > resultWithDepositMultipier[b] ? a : b) 
