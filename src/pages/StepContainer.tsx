@@ -94,6 +94,7 @@ const StepContainer = (props: Props) => {
       setBooksData(updatedBooksData);
       const booksScore = pointConverter(tableData.data.rows);
       setBooksScore(booksScore);
+      console.log(booksData);
     }
 
     getData();
