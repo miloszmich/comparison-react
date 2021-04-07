@@ -142,7 +142,8 @@ const StepContainer = (props: Props) => {
       } else {
         props.setStepFourthValue(value);
         props.stepHandler(1);
-        setUseBonus(false);
+        if (value === 2) setUseBonus(false);
+        else setUseBonus(true);
       }
     }
 
