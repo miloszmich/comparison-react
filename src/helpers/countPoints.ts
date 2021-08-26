@@ -50,18 +50,22 @@ export interface ExcelScore extends StandardObject {
 
 export const pointConverter = (data: ExcelTableData[]): Record<string, Record<string, string | number>> => {
 
-  const headers = data[1];
-  const usedData = data.splice(2, data.length - 1);
-
+  const bukHeaders: (string | number)[] = [];
+  const usedData = data;
+  
+  usedData.forEach( function(item) {
+      bukHeaders.push(item.Bukmacher);
+  });
+  
   const bookmakers: Record<string, Record<string, number | string>> = {};
+  
+  
+   usedData.forEach(book => {
+    bookmakers[book.Bukmacher] = {};
 
-  usedData.forEach(book => {
-    bookmakers[book._cn6ca] = {};
-
-
-    for (const key in headers) {
-      if (key === '_cn6ca') continue;
-      bookmakers[book._cn6ca][headers[key].toString().toLowerCase()] = book[key];
+    for (const key in book) {
+      if (key === 'Bukmacher') continue;
+      bookmakers[book.Bukmacher][key.toString().toLowerCase()] = book[key];
     }
   });
 
