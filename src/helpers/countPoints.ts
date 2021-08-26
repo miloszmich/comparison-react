@@ -59,7 +59,7 @@ export const pointConverter = (data: ExcelTableData[]): Record<string, Record<st
   
   const bookmakers: Record<string, Record<string, number | string>> = {};
   
-  
+   
    usedData.forEach(book => {
     bookmakers[book.Bukmacher] = {};
 
