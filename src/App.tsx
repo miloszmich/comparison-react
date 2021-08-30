@@ -122,7 +122,7 @@ function App() {
 
   return (
     <div className={`modal-comparison${isVisible ? '' : '--not-active'}`}>
-      <a href="#starter-bukmacherski">Odpal</a>
+      {/* <a href="#starter-bukmacherski">Odpal</a> */}
       {showConfetti && <Confetti />}
       {isVisible && <ModalSlide show={showModal}><div className="comparison">
         <Loader 

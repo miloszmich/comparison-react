@@ -51,23 +51,25 @@ const StepContainer = (props: Props) => {
   ];
 
   const stringParser = (string: string) => {
-    return JSON.parse(string);
+    return JSON.parse(string); 
   }
 
   React.useEffect(() => {
     const getData = async () => {
-      const comparisonData = await axios.get('https://najlepsibukmacherzy.pl/wp-json/wp/v2/polaspecjalne/8689/');
-      const bookData = await axios.get('https://najlepsibukmacherzy.pl/wp-json/wp/v2/bukmacherzy/');
+      const comparisonData = await axios.get('https://najlepsibukmacherzy.pl/wp-json/wp/v2/polaspecjalne/8689/?per_page=100');
+      const bookData = await axios.get('https://najlepsibukmacherzy.pl/wp-json/wp/v2/bukmacherzy/?per_page=100');
       const tableData = await axios.get('https://nb-g2json.herokuapp.com/api?api_key=AIzaSyBLD62TErWG1tyCS24n3AKiNlk0hAUoKNY&id=15UiwuXR6eQkPFBdDVaZTDARw1LoMX_UpWm2S1e94-d0&sheet=Tabela%201&columns=false');    
  
       const usedBookData = bookData.data.map((bd: any) => {
         return {
           name: bd.title.rendered.split(' ')[0].replace(',', ''),
           promoCode: bd.nu_promokod,
+          logo: bd.nu_logo_sm,
           site: bd.nu_witryna,
-          logo: bd.nu_logo_widget
+          // logo: bd.nu_logo_widget
         }
       });
+      // console.log(usedBookData);
 
       const fortuna = {
         name: 'Fortuna',
@@ -82,6 +84,7 @@ const StepContainer = (props: Props) => {
         const foundedIndex = usedBookData.findIndex((ubd: any) => ubd.name.toUpperCase() === bd.buk.toUpperCase());
         const standardPromoCode = usedBookData[foundedIndex] && usedBookData[foundedIndex].promoCode ? usedBookData[foundedIndex].promoCode : null;
         const standardLogo = usedBookData[foundedIndex] && usedBookData[foundedIndex].logo ? usedBookData[foundedIndex].logo : bd.logo;
+        // console.log('logo: '+standardLogo);
 
         return {
           ...bd,
@@ -94,7 +97,6 @@ const StepContainer = (props: Props) => {
       setBooksData(updatedBooksData);
       const booksScore = pointConverter(tableData.data.rows);
       setBooksScore(booksScore);
-      console.log(booksData);
     }
 
     getData();
@@ -186,6 +188,7 @@ const StepContainer = (props: Props) => {
       currentStepComponent = <SliderStep setStepFifthValue={props.setStepFifthValue}/>
       break;
     case 5:
+      // console.log(result);
       currentStepComponent = result ? <ScoreStep 
         bookInfo={ booksData.find(bd => bd.buk === result.result) ||  {buk: 'Fortuna', link: '', logo: ''}} 
         usedBook={result.result}

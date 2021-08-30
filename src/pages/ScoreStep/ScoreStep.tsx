@@ -17,6 +17,7 @@ interface Props {
   infoAboutUsingBonus: number;
 }
 
+
 const ScoreStep = (props: Props) => {
   const [copyTextInfo, setCopyTextInfo] = React.useState(' Kopiuj kod');
 
@@ -71,7 +72,7 @@ const ScoreStep = (props: Props) => {
   let infoAboutBonus = <></>;
   if (props.infoAboutUsingBonus === 0) infoAboutBonus = <p><span className="right-column__plus"><Check /></span><span className="right-column__advantage"><b>Wysoki wynik oferty powitalnej</b> przy podanej wysokości depozytu</span></p>;
   if (props.infoAboutUsingBonus === 1) infoAboutBonus = <p><span className="right-column__plus"><Check /></span><span className="right-column__advantage"><b>Wysoki wynik oferty powitalnej</b> bez depozytu</span></p>;
-
+  // console.log(props.bookInfo);
   return (
     <div className="options__wrapper">
       <div className="options__left-column left-column">

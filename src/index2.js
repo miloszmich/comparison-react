@@ -794,7 +794,7 @@ function kalkulator_bonusowy_plus_1 () {
 }
 
 function comparisonResultUpdate ()  {
-	console.log('Request')
+	// console.log('Request')
   if (!getCookie("porownywarka-counted")) {
 	$.ajax({url:"https://najlepsibukmacherzy.pl/wp-content/themes/najlepsibukmacherzy/logic/kalkulator-bonusowy-counter.php", async: true, type: "POST", data: { "pass": 'DSF6YVjmKy' }})
     setCookie("porownywarka-counted", true, 5)
