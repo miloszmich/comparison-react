@@ -64,7 +64,7 @@ const StepContainer = (props: Props) => {
         return {
           name: bd.title.rendered.split(' ')[0].replace(',', ''),
           promoCode: bd.nu_promokod,
-          logo: bd.nu_logo_sm,
+          logo: bd.nu_logo_widget,
           site: bd.nu_witryna,
           // logo: bd.nu_logo_widget
         }
