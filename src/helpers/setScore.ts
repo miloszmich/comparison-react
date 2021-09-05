@@ -59,6 +59,7 @@ const pointHandler = (result: Result, data: Record<string, Record<string, string
   const pointsByDisciplines: number[] = result.usesDisciplines.map(ud => {
     return Number(data[result.bookmaker][ud]);
   })
+  // console.log('Dyscypliny: ' + pointsByDisciplines + '; Skills: ' + pointByDevice + '; Device: ' + pointByDevice);
   
   return [Number(pointBySkill), Number(pointByDevice), Number(pointsByMultipiers), ...pointsByDisciplines];
 }
@@ -80,6 +81,10 @@ export const getBook = (
   const punktyLVBET: number[] = [];
   const punktyETOTO: number[] = [];
   const punktyPZBuk: number[] = [];
+  // Nowe z września 2021
+  const punktyeWinner: number[] = [];
+  const punktyFuksiarz: number[] = [];
+  const punktySuperbet: number[] = [];
 
   
 
@@ -89,6 +94,7 @@ export const getBook = (
     device: score.secondStep,
     usesDisciplines: score.thirdStep
   }
+  // console.log(data);
 
   punktyFortuna.push(...pointHandler({...dataToCalc, bookmaker: 'Fortuna'}, data));
   punktyBetfan.push(...pointHandler({ ...dataToCalc, bookmaker: "BETFAN" }, data));
@@ -100,6 +106,10 @@ export const getBook = (
   punktyLVBET.push(...pointHandler({ ...dataToCalc, bookmaker: "LVBet" }, data));
   punktyETOTO.push(...pointHandler({ ...dataToCalc, bookmaker: "ETOTO" }, data));
   punktyPZBuk.push(...pointHandler({ ...dataToCalc, bookmaker: "PZBuk" }, data));
+  // Nowe z września 2021
+  punktyeWinner.push(...pointHandler({ ...dataToCalc, bookmaker: "eWinner" }, data));
+  punktyFuksiarz.push(...pointHandler({ ...dataToCalc, bookmaker: "Fuksiarz" }, data));
+  punktySuperbet.push(...pointHandler({ ...dataToCalc, bookmaker: "Superbet" }, data));
 
   // // wyniki cząstkowe
   const results: {[key: string]: number} = {
@@ -113,7 +123,12 @@ export const getBook = (
     LVBET: punktyLVBET.reduce((a, b) => Number(a) + Number(b), 0),
     ETOTO: punktyETOTO.reduce((a, b) => Number(a) + Number(b), 0),
     PZBuk: punktyPZBuk.reduce((a, b) => Number(a) + Number(b), 0),
+    // Nowe z września 2021
+    eWinner: punktyeWinner.reduce((a, b) => Number(a) + Number(b), 0),
+    Fuksiarz: punktyFuksiarz.reduce((a, b) => Number(a) + Number(b), 0),
+    Superbet: punktySuperbet.reduce((a, b) => Number(a) + Number(b), 0),
   }
+  // console.log(results);
 
   const depositValues = {
     Fortuna: obliczBonus(`${score.fifthStep}`, 'Fortuna'),
@@ -126,12 +141,17 @@ export const getBook = (
     LVBET: obliczBonus(`${score.fifthStep}`, 'LVBET'),
     ETOTO: obliczBonus(`${score.fifthStep}`, 'ETOTO'),
     PZBuk: obliczBonus(`${score.fifthStep}`, 'PZBuk'),
+    // Nowe z września 2021
+    eWinner: obliczBonus(`${score.fifthStep}`, 'eWinner'),
+    Fuksiarz: obliczBonus(`${score.fifthStep}`, 'Fuksiarz'),
+    Superbet: obliczBonus(`${score.fifthStep}`, 'Superbet'),
   }
-  
+
   const depositMultipiers = Object.entries(depositValues).sort(([,a], [,b]) => b-a).map(([key, values], index) => [key, 2 - index/10]);
   const mapOfDepositMultipiers = Object.fromEntries(depositMultipiers)
   
   const resultWithDepositMultipier: {[key: string]: number} = {}
+  // console.log(resultWithDepositMultipier);git
   
   for (const book in results) {
     resultWithDepositMultipier[book] = Number((results[book] * mapOfDepositMultipiers[book]).toFixed());
