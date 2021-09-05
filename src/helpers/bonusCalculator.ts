@@ -259,6 +259,39 @@
 	return depozyt + bonus + freebet + dodatkowyFreebet;
 }
 
+const obliczBonusEwinner = (kwota: string): number => {
+	let depozyt = parseFloat(kwota);
+	let cashback = 0;
+	let freebet = 0;
+	let bonus = 0;
+
+	if (depozyt < 1) { depozyt = 0; }
+
+	if (depozyt < 5) { cashback = depozyt; }
+	if (depozyt > 20 && cashback < 110) { cashback = depozyt * 0.88; }
+	if (depozyt > 20 && cashback >= 110) { cashback = 110; }
+
+
+	return depozyt + bonus + cashback + freebet;
+}
+
+const obliczBonusNoblebet = (kwota: string): number => {
+	let depozyt = parseFloat(kwota);
+	let cashback = 0;
+	let freebet = 0;
+	let bonus = 0;
+	let bonusZaApp = 0;
+
+	if (depozyt >= 20) { bonusZaApp = 20; }
+
+
+	if (depozyt >= 10 && depozyt <= 1200) { bonus = depozyt; }
+	if (bonus > 1200) { bonus = 1200; }
+
+
+	return depozyt + bonus + cashback + freebet + bonusZaApp;
+}
+
  const obliczBonusMilenium = (kwota: string): number => {
 	let depozyt = parseFloat(kwota);
 	let cashback = 0;
@@ -276,6 +309,22 @@
 	if (depozyt >= 50) { freebet = 20; }
 
 	return depozyt + bonus + cashback + freebet;
+}
+
+const obliczBonusFuksiarz = (kwota: string): number => {
+	let depozyt = parseFloat(kwota);
+	let freebet = 0;
+	let cashback = 0;
+
+	if (depozyt >= 20) {
+		cashback = depozyt * 0.44;
+	}
+
+	if (cashback >= 500) {
+		cashback = 500;
+	}
+
+	return depozyt + cashback + freebet;
 }
 
 export const obliczBonus = (deposit: string, book: string): number => {
@@ -328,6 +377,18 @@ export const obliczBonus = (deposit: string, book: string): number => {
 
 		case "PZBuk":
 			result = obliczBonusPzbuk(deposit);
+		break;
+		
+		case "ewinner":
+			result = obliczBonusEwinner(deposit);
+		break;
+
+		case "noblebet":
+			result = obliczBonusNoblebet(deposit);
+		break;
+		
+		case "fuksiarz":
+			result = obliczBonusFuksiarz(deposit);
 		break;
 	}
 
